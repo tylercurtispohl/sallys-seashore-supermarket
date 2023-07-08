@@ -37,9 +37,10 @@ exports.handler = async (event) => {
       };
     case "GET":
     default:
+      const data = await docClient.scan({ TableName: "products-main" });
       return {
         ...partialResponse,
-        body: JSON.stringify("Hello from Lambda!"),
+        body: JSON.stringify(data),
       };
   }
 };
