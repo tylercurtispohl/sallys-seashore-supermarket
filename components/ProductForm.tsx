@@ -6,9 +6,13 @@ import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
-import { Auth, API } from "aws-amplify";
+import { Auth, API, Storage, Amplify } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+Amplify.configure({ ...awsconfig, ssr: true });
+Storage.configure(awsconfig);
 Auth.configure(awsconfig);
 
 const validationSchema = yup.object({
@@ -34,6 +38,14 @@ const ProductForm = ({
   mode: "edit" | "create";
   product?: Product | undefined;
 }) => {
+  const router = useRouter();
+
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (newFile: File | null) => {
+    setFile(newFile);
+  };
+
   const formik = useFormik({
     initialValues: {
       name: product?.name ?? "",
@@ -47,20 +59,32 @@ const ProductForm = ({
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      let imageKey: string | null | undefined = product?.imageKey;
+
+      if (file) {
+        const filename = `${Date.now()}-${file.name}`;
+
+        // upload the file to S3 and retrieve the S3 Key
+        const filePutResult = await Storage.put(filename, file, {
+          contentType: file.type,
+        });
+
+        imageKey = filePutResult.key;
+      }
 
       const authenticatedUser = await Auth.currentAuthenticatedUser();
       const token = authenticatedUser.signInUserSession.idToken.jwtToken;
 
-      console.log(token);
       const requestData = {
         headers: {
           Authorization: token,
         },
-        body: values,
+        body: { ...values, id: product?.id, imageKey },
       };
-      const responseData = await API.post("sallyapi", "/products", requestData);
-      console.log(responseData);
+
+      await API.post("sallyapi", "/products", requestData);
+
+      router.push("/product-admin");
     },
   });
 
@@ -139,6 +163,15 @@ const ProductForm = ({
                     formik.touched.stockQuantity && formik.errors.stockQuantity
                   }
                 ></TextField>
+              </Grid>
+              <Grid xs={12}>
+                <MuiFileInput
+                  value={file}
+                  onChange={handleFileChange}
+                  variant="standard"
+                  label="Upload product image"
+                  className="w-full"
+                />
               </Grid>
               <Grid xsOffset={6} xs={6}>
                 <div className="flex flex-row justify-end gap-2">
