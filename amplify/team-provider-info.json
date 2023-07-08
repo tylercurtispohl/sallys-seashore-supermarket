@@ -25,11 +25,14 @@
       "function": {
         "productCrud": {
           "deploymentBucketName": "amplify-sally-main-102515-deployment",
-          "s3Key": "amplify-builds/productCrud-34345455446e42436477-build.zip"
+          "s3Key": "amplify-builds/productCrud-594958796c5966456279-build.zip"
         }
       },
       "api": {
         "sallyapi": {}
+      },
+      "storage": {
+        "sallydb": {}
       }
     }
   }

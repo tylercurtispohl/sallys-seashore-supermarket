@@ -1,4 +1,10 @@
-/**
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+	STORAGE_SALLYDB_ARN
+	STORAGE_SALLYDB_NAME
+	STORAGE_SALLYDB_STREAMARN
+Amplify Params - DO NOT EDIT *//**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
