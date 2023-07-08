@@ -85,6 +85,7 @@ const Nav = () => {
           <Link
             href="/product-admin"
             className="text-md w-full text-center hover:text-cyan-800 hover:underline"
+            onClick={() => handlePopoverClose()}
           >
             {/* <Button
               variant="text"
