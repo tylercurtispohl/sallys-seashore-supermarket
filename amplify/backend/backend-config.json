@@ -25,6 +25,13 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "productCrud": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "hosting": {
     "amplifyhosting": {
       "lastPushTimeStamp": "2023-07-08T17:32:11.128Z",

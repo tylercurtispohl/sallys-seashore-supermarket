@@ -20,6 +20,9 @@
       },
       "auth": {
         "sallyc2ced543": {}
+      },
+      "function": {
+        "productCrud": {}
       }
     }
   }
