@@ -1,4 +1,20 @@
 {
+  "api": {
+    "sallyapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "productCrud"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "sallyc2ced543": {
       "customAuth": false,
@@ -40,6 +56,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_productCrud_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "productCrud"
+        }
+      ]
+    },
+    "AMPLIFY_function_productCrud_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "productCrud"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {

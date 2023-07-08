@@ -3,6 +3,9 @@
  */
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
+  if (event.requestContext.authorizer) {
+    console.log(`CLAIMS: `, event.requestContext.authorizer.claims);
+  }
   return {
     statusCode: 200,
     headers: {

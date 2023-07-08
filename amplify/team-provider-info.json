@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-sally-main-102515-unauthRole",
       "StackName": "amplify-sally-main-102515",
       "StackId": "arn:aws:cloudformation:us-west-1:018973276024:stack/amplify-sally-main-102515/679fd1b0-1db4-11ee-9512-026858f064b1",
-      "AmplifyAppId": "d1go9kod20z564"
+      "AmplifyAppId": "d1go9kod20z564",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-sally-main-102515-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "hosting": {
@@ -22,7 +23,13 @@
         "sallyc2ced543": {}
       },
       "function": {
-        "productCrud": {}
+        "productCrud": {
+          "deploymentBucketName": "amplify-sally-main-102515-deployment",
+          "s3Key": "amplify-builds/productCrud-34345455446e42436477-build.zip"
+        }
+      },
+      "api": {
+        "sallyapi": {}
       }
     }
   }
