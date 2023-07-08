@@ -53,16 +53,15 @@ const putProduct = async (productData) => {
   console.log(`PUTTING PRODUCT: ${JSON.stringify(putItem)}`);
 
   try {
-    const result = await docClient
+    await docClient
       .put({
         TableName: "products-main",
         Item: putItem,
       })
       .promise();
 
-    console.log(`PUT RESULT: ${JSON.stringify(result)}`);
-
-    return result;
+    // return the new or updated item
+    return putItem;
   } catch (error) {
     console.log(`ERROR PUTTING PRODUCT: ${error}`);
     throw error;
