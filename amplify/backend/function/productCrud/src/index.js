@@ -50,7 +50,7 @@ const putProduct = async (productData) => {
     id: productData.id || uuidv4(),
   };
 
-  console.log(`PUTTING PRODUCT: ${JSON.stringify(newItem)}`);
+  console.log(`PUTTING PRODUCT: ${JSON.stringify(putItem)}`);
 
   try {
     const result = await docClient
