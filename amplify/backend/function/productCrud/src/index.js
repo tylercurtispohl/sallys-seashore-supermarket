@@ -26,7 +26,7 @@ exports.handler = async (event) => {
 
         console.log(`NEW PRODUCT: ${JSON.stringify(newItem)}`);
 
-        docClient.put({
+        await docClient.put({
             TableName: "products-main",
             Item: newItem
         });
