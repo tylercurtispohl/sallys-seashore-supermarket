@@ -104,6 +104,11 @@
     "sallydb": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
+    },
+    "sallystorage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

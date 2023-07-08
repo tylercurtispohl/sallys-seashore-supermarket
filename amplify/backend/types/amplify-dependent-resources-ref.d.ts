@@ -34,6 +34,10 @@ export type AmplifyDependentResourcesAttributes = {
       "PartitionKeyType": "string",
       "Region": "string",
       "StreamArn": "string"
+    },
+    "sallystorage": {
+      "BucketName": "string",
+      "Region": "string"
     }
   }
 }
