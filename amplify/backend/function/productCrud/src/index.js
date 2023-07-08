@@ -38,7 +38,9 @@ exports.handler = async (event) => {
     case "GET":
     default:
       // TODO: improve performance by implementing pagination and avoiding a full table scan
-      const data = await docClient.scan({ TableName: "products-main" });
+      const data = await docClient
+        .scan({ TableName: "products-main" })
+        .promise();
       return {
         ...partialResponse,
         body: JSON.stringify(data),
