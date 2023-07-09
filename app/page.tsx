@@ -4,6 +4,7 @@ import { Amplify, API, Auth } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import awsconfig from "../src/aws-exports";
 import Button from "@mui/material/Button";
+import ProductList from "@/components/ProductList";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -29,11 +30,7 @@ export default withAuthenticator(function Home({ signOut, user }) {
 
   return (
     <main className="">
-      <h1>HOME</h1>
-      <h1>Logged in as {user?.username}.</h1>
-      <div>
-        <Button onClick={callProductsApi}>Call Products API</Button>
-      </div>
+      <ProductList actionLink="/product-details"></ProductList>
       <div>
         <Button onClick={signOut}>Sign Out</Button>
       </div>

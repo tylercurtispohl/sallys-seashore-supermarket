@@ -26,7 +26,7 @@ const Nav = () => {
   const popoverId = isPopoverOpen ? "simple-popover" : undefined;
 
   return (
-    <nav className="flex flex-row justify-between w-full tracking-wider p-5">
+    <nav className="flex flex-row justify-between w-full tracking-wider">
       <Link href="/">
         <Image
           src="/logos/logo-no-background.png"
