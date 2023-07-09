@@ -35,7 +35,7 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string",
       "StreamArn": "string"
     },
-    "sallystorage": {
+    "sallystorage2": {
       "BucketName": "string",
       "Region": "string"
     }
