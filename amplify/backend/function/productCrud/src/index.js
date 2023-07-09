@@ -37,10 +37,21 @@ exports.handler = async (event) => {
       };
     case "GET":
     default:
-      // TODO: improve performance by implementing pagination and avoiding a full table scan
-      const data = await docClient
-        .scan({ TableName: "products-main" })
-        .promise();
+      let data;
+      if (event.pathParameters?.proxy) {
+        // assuming that proxy is a product ID
+        // I know this is not a great idea but its what I'm going with for now
+        data = await docClient
+          .get({
+            TableName: "products-main",
+            Key: { id: event.pathParameters.proxy },
+          })
+          .promise();
+      } else {
+        // TODO: improve performance by implementing pagination and avoiding a full table scan
+        data = await docClient.scan({ TableName: "products-main" }).promise();
+      }
+
       return {
         ...partialResponse,
         body: JSON.stringify(data),
