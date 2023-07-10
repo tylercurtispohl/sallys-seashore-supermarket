@@ -82,40 +82,6 @@
       "type": "cicd"
     }
   },
-  "parameters": {
-    "AMPLIFY_function_productCrud_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "productCrud"
-        }
-      ]
-    },
-    "AMPLIFY_function_productCrud_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "productCrud"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_appId": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_type": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    }
-  },
   "storage": {
     "sallydb": {
       "providerPlugin": "awscloudformation",
