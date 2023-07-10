@@ -36,7 +36,7 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
 
       console.log(data);
 
-      setProduct(data.Items);
+      setProduct(data.Item);
       setIsLoading(false);
     };
 

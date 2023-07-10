@@ -10,6 +10,7 @@ import { Auth, API, Storage, Amplify } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Storage.configure(awsconfig);
@@ -94,98 +95,111 @@ const ProductForm = ({
         {mode === "create" ? "Create" : "Edit"} Product
       </h1>
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-row justify-around">
-          <div className="w-full md:w-2/3 xl:w-1/2">
-            <Grid container spacing={2}>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  id="product_name_input"
-                  name="name"
-                  label="Name"
-                  variant="standard"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  error={formik.touched.name && Boolean(formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
-                ></TextField>
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={4}
-                  maxRows={8}
-                  id="product_description_input"
-                  name="description"
-                  label="Description"
-                  variant="standard"
-                  value={formik.values.description}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.description &&
-                    Boolean(formik.errors.description)
-                  }
-                  helperText={
-                    formik.touched.description && formik.errors.description
-                  }
-                ></TextField>
-              </Grid>
-              <Grid xs={6}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  id="product_price_input"
-                  name="price"
-                  label="Price"
-                  variant="standard"
-                  value={formik.values.price}
-                  onChange={formik.handleChange}
-                  error={formik.touched.price && Boolean(formik.errors.price)}
-                  helperText={formik.touched.price && formik.errors.price}
-                ></TextField>
-              </Grid>
-              <Grid xs={6}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  id="product_stock_quantity_input"
-                  name="stockQuantity"
-                  label="Stock Quantity"
-                  variant="standard"
-                  value={formik.values.stockQuantity}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.stockQuantity &&
-                    Boolean(formik.errors.stockQuantity)
-                  }
-                  helperText={
-                    formik.touched.stockQuantity && formik.errors.stockQuantity
-                  }
-                ></TextField>
-              </Grid>
-              <Grid xs={12}>
-                <MuiFileInput
-                  value={file}
-                  onChange={handleFileChange}
-                  variant="standard"
-                  label="Upload product image"
-                  className="w-full"
+        <Grid container spacing={2}>
+          <Grid xs={12}>
+            <TextField
+              fullWidth
+              id="product_name_input"
+              name="name"
+              label="Name"
+              variant="standard"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+            ></TextField>
+          </Grid>
+          <Grid xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              minRows={4}
+              maxRows={8}
+              id="product_description_input"
+              name="description"
+              label="Description"
+              variant="standard"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.description && Boolean(formik.errors.description)
+              }
+              helperText={
+                formik.touched.description && formik.errors.description
+              }
+            ></TextField>
+          </Grid>
+          <Grid xs={6}>
+            <TextField
+              fullWidth
+              type="number"
+              id="product_price_input"
+              name="price"
+              label="Price"
+              variant="standard"
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              error={formik.touched.price && Boolean(formik.errors.price)}
+              helperText={formik.touched.price && formik.errors.price}
+            ></TextField>
+          </Grid>
+          <Grid xs={6}>
+            <TextField
+              fullWidth
+              type="number"
+              id="product_stock_quantity_input"
+              name="stockQuantity"
+              label="Stock Quantity"
+              variant="standard"
+              value={formik.values.stockQuantity}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.stockQuantity &&
+                Boolean(formik.errors.stockQuantity)
+              }
+              helperText={
+                formik.touched.stockQuantity && formik.errors.stockQuantity
+              }
+            ></TextField>
+          </Grid>
+          {product?.imageKey && (
+            <Grid xs={12}>
+              <p className="text-xs text-gray-500 mb-2">Current Image</p>
+              <div>
+                <Image
+                  src={`https://sallybucket102515-main.s3.us-west-1.amazonaws.com/public/${product.imageKey}`}
+                  height={300}
+                  width={300}
+                  alt={`Image for ${product.name}`}
                 />
-              </Grid>
-              <Grid xsOffset={6} xs={6}>
-                <div className="flex flex-row justify-end gap-2">
-                  <Button type="button" variant="text" color="error">
-                    Cancel
-                  </Button>
-                  <Button type="submit" variant="outlined" color="primary">
-                    Submit
-                  </Button>
-                </div>
-              </Grid>
+              </div>
             </Grid>
-          </div>
-        </div>
+          )}
+          <Grid xs={12}>
+            <MuiFileInput
+              value={file}
+              onChange={handleFileChange}
+              variant="standard"
+              label="Upload product image"
+              className="w-full"
+            />
+          </Grid>
+          <Grid xsOffset={6} xs={6}>
+            <div className="flex flex-row justify-end gap-2">
+              <Button
+                type="button"
+                variant="text"
+                color="error"
+                onClick={() => router.back()}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" variant="outlined" color="primary">
+                Submit
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
       </form>
     </>
   );

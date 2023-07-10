@@ -50,7 +50,7 @@ const Nav = () => {
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "center",
+          horizontal: "left",
         }}
       >
         <div className="flex flex-col gap-2 p-3 text-cyan-600">
