@@ -11,6 +11,7 @@ import awsconfig from "../src/aws-exports";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { S3_BUCKET_URL } from "@/lib/utils";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Storage.configure(awsconfig);
@@ -167,7 +168,7 @@ const ProductForm = ({
               <p className="text-xs text-gray-500 mb-2">Current Image</p>
               <div>
                 <Image
-                  src={`https://sallybucket102515-main.s3.us-west-1.amazonaws.com/public/${product.imageKey}`}
+                  src={`${S3_BUCKET_URL}${product.imageKey}`}
                   height={300}
                   width={300}
                   alt={`Image for ${product.name}`}

@@ -1,8 +1,4 @@
 "use client";
-import { Amplify, API, Auth } from "aws-amplify";
-import awsconfig from "../src/aws-exports";
-import { useState, useEffect } from "react";
-import { Product } from "@/types/product";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
@@ -12,46 +8,24 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { useGetProducts } from "@/lib/hooks";
+import { S3_BUCKET_URL } from "@/lib/utils";
 
-Amplify.configure({ ...awsconfig, ssr: true });
-Auth.configure(awsconfig);
-
-// TODO: put this in an env var
-const s3BucketUrl =
-  "https://sallybucket102515-main.s3.us-west-1.amazonaws.com/public/";
-
-// This is for formatting the price as currency later on
+// This is for formatting the price as U.S. currency
 // From this SO question: https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
-const currencyFormatter = new Intl.NumberFormat("en-US", {
+export const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-const ProductList = ({ actionLink }: { actionLink: string }) => {
-  const [products, setProducts] = useState<Product[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const authenticatedUser = await Auth.currentAuthenticatedUser();
-      const token = authenticatedUser.signInUserSession.idToken.jwtToken;
-
-      const requestData = {
-        headers: {
-          Authorization: token,
-        },
-      };
-
-      const data = await API.get("sallyapi", "/products", requestData);
-
-      setProducts(data.Items);
-      setIsLoading(false);
-    };
-
-    if (!products) {
-      getProducts();
-    }
-  }, [products]);
+const ProductList = ({
+  actionLink,
+  showStockQuantity,
+}: {
+  actionLink: string;
+  showStockQuantity?: boolean | undefined;
+}) => {
+  const { products, isLoading } = useGetProducts();
 
   return (
     <div>
@@ -70,7 +44,7 @@ const ProductList = ({ actionLink }: { actionLink: string }) => {
                 >
                   <CardActionArea href={`${actionLink}/${p.id}`}>
                     <CardMedia
-                      image={`${s3BucketUrl}${p.imageKey}`}
+                      image={`${S3_BUCKET_URL}${p.imageKey}`}
                       title={`${p.name}`}
                       className="h-52"
                     />
@@ -85,6 +59,11 @@ const ProductList = ({ actionLink }: { actionLink: string }) => {
                       <Typography variant="body1" component="p">
                         {currencyFormatter.format(p.price)}
                       </Typography>
+                      {showStockQuantity && (
+                        <Typography variant="body1" component="p">
+                          {p.stockQuantity} in stock
+                        </Typography>
+                      )}
                     </CardContent>
                   </CardActionArea>
                 </Card>

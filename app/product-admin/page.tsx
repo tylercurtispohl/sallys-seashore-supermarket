@@ -15,7 +15,7 @@ const ProductAdmin = () => {
           <Button variant="outlined">Add New Product</Button>
         </Link>
       </div>
-      <ProductList actionLink="/edit-product"></ProductList>
+      <ProductList actionLink="/edit-product" showStockQuantity></ProductList>
     </div>
   );
 };
