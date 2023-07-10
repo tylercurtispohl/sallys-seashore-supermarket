@@ -1,3 +1,13 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "sallydb": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }
