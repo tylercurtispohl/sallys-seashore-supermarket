@@ -101,6 +101,7 @@ const placeOrder = async (event) => {
     id: orderData.id || uuidv4(),
     createdAt: now,
     updatedAt: now,
+    status: "processing",
   };
 
   console.log(`PUTTING ORDER: ${JSON.stringify(putItem)}`);
