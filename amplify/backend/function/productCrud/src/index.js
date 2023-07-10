@@ -47,6 +47,21 @@ exports.handler = async (event) => {
             Key: { id: event.pathParameters.proxy },
           })
           .promise();
+      } else if (event.multiValueQueryStringParameters.ids) {
+        // get a list of products specified in the query string
+        const ids = event.multiValueQueryStringParameters.ids;
+
+        data = await docClient
+          .batchGet({
+            RequestItems: {
+              "products-main": {
+                Keys: ids.map((id) => ({
+                  id,
+                })),
+              },
+            },
+          })
+          .promise();
       } else {
         // TODO: improve performance by implementing pagination and avoiding a full table scan
         data = await docClient.scan({ TableName: "products-main" }).promise();
