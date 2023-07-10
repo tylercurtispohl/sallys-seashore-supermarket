@@ -50,6 +50,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
                   color="primary"
                   className="mt-2"
                   onClick={() => addProductToCart(product.id)}
+                  disabled={!product.stockQuantity}
                 >
                   Add to Cart
                 </Button>
