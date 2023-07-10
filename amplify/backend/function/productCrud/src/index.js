@@ -47,7 +47,7 @@ exports.handler = async (event) => {
             Key: { id: event.pathParameters.proxy },
           })
           .promise();
-      } else if (event.multiValueQueryStringParameters.ids) {
+      } else if (event.multiValueQueryStringParameters?.ids) {
         // get a list of products specified in the query string
         const ids = event.multiValueQueryStringParameters.ids;
 
