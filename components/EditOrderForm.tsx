@@ -54,7 +54,7 @@ const EditOrderForm = ({ order }: { order: Order }) => {
         body: { ...order, ...values },
       };
 
-      await API.post("sallyapi", "/orders", requestData);
+      await API.put("sallyapi", "/orders", requestData);
 
       router.push("/order-admin");
     },
@@ -205,7 +205,7 @@ const EditOrderForm = ({ order }: { order: Order }) => {
                 Cancel
               </Button>
               <Button type="submit" variant="outlined" color="primary">
-                Place Order
+                Update Order
               </Button>
             </div>
           </Grid>
