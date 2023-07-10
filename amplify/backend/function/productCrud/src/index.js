@@ -51,7 +51,7 @@ exports.handler = async (event) => {
         // get a list of products specified in the query string
         const ids = event.multiValueQueryStringParameters.ids;
 
-        data = await docClient
+        const result = await docClient
           .batchGet({
             RequestItems: {
               "products-main": {
@@ -62,6 +62,11 @@ exports.handler = async (event) => {
             },
           })
           .promise();
+
+        // transform the response to have a similar structure to the scan or get response
+        data = {
+          Items: result.Responses["products-main"],
+        };
       } else {
         // TODO: improve performance by implementing pagination and avoiding a full table scan
         data = await docClient.scan({ TableName: "products-main" }).promise();
