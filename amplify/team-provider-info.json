@@ -42,8 +42,7 @@
       "storage": {
         "sallydb": {},
         "sallystorage2": {},
-        "sallydbshoppingcart": {},
-        "sallyOrderDb": {}
+        "sallydbshoppingcart": {}
       }
     }
   }

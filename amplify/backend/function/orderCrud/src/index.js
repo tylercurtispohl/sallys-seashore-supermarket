@@ -67,7 +67,7 @@ exports.handler = async (event) => {
         data = await docClient
           .query({
             TableName: "orders-main",
-            IndexName: "userIdCreatedAt-index",
+            IndexName: "userId-index",
             KeyConditionExpression: "userId = :usrId",
             ExpressionAttributeValues: {
               ":usrId": userId,
