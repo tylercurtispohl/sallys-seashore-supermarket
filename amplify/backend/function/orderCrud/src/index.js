@@ -93,10 +93,13 @@ const placeOrder = async (event) => {
   // return the created order
 
   const orderData = JSON.parse(event.body);
+  const now = new Date().toISOString();
 
   const putItem = {
     ...orderData,
     id: orderData.id || uuidv4(),
+    createdAt: now,
+    updatedAt: now,
   };
 
   console.log(`PUTTING ORDER: ${JSON.stringify(putItem)}`);
@@ -141,6 +144,7 @@ const placeOrder = async (event) => {
                 // of each item in the cart. This may need
                 // to change later.
                 stockQuantity: p.stockQuantity - 1,
+                updatedAt: now,
               },
             },
           })),
@@ -174,6 +178,7 @@ const updateOrder = async (event) => {
   const putItem = {
     ...orderData,
     id: orderData.id || uuidv4(),
+    updatedAt: new Date().toISOString(),
   };
 
   console.log(`PUTTING ORDER: ${JSON.stringify(putItem)}`);

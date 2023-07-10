@@ -81,9 +81,13 @@ exports.handler = async (event) => {
 };
 
 const putProduct = async (productData) => {
+  const now = new Date().toISOString();
+
   const putItem = {
     ...productData,
     id: productData.id || uuidv4(),
+    createdAt: productData.createdAt ?? now,
+    updatedAt: now,
   };
 
   console.log(`PUTTING PRODUCT: ${JSON.stringify(putItem)}`);
