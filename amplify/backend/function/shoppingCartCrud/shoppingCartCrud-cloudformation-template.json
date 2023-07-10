@@ -27,6 +27,18 @@
     "storagesallydbStreamArn": {
       "Type": "String",
       "Default": "storagesallydbStreamArn"
+    },
+    "storagesallydbshoppingcartName": {
+      "Type": "String",
+      "Default": "storagesallydbshoppingcartName"
+    },
+    "storagesallydbshoppingcartArn": {
+      "Type": "String",
+      "Default": "storagesallydbshoppingcartArn"
+    },
+    "storagesallydbshoppingcartStreamArn": {
+      "Type": "String",
+      "Default": "storagesallydbshoppingcartStreamArn"
     }
   },
   "Conditions": {
@@ -90,6 +102,15 @@
             },
             "STORAGE_SALLYDB_STREAMARN": {
               "Ref": "storagesallydbStreamArn"
+            },
+            "STORAGE_SALLYDBSHOPPINGCART_NAME": {
+              "Ref": "storagesallydbshoppingcartName"
+            },
+            "STORAGE_SALLYDBSHOPPINGCART_ARN": {
+              "Ref": "storagesallydbshoppingcartArn"
+            },
+            "STORAGE_SALLYDBSHOPPINGCART_STREAMARN": {
+              "Ref": "storagesallydbshoppingcartStreamArn"
             }
           }
         },
@@ -227,6 +248,39 @@
                     [
                       {
                         "Ref": "storagesallydbArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagesallydbshoppingcartArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagesallydbshoppingcartArn"
                       },
                       "index/*"
                     ]

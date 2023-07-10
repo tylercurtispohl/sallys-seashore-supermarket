@@ -1,0 +1,18 @@
+{
+  "resourceName": "sallydbshoppingcart",
+  "tableName": "shoppingCart",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "userId-index",
+      "partitionKey": {
+        "fieldName": "userId",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

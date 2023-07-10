@@ -77,6 +77,15 @@
           ],
           "category": "storage",
           "resourceName": "sallydb"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "sallydbshoppingcart"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -142,6 +151,10 @@
   },
   "storage": {
     "sallydb": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "sallydbshoppingcart": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
