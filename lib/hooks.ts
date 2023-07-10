@@ -3,11 +3,12 @@ import awsconfig from "../src/aws-exports";
 import { useState, useEffect } from "react";
 import { Product } from "@/types/product";
 import { ShoppingCart } from "@/types/shoppingCart";
+import { Order } from "@/types/order";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
 
-const getAuthUserInfo = async () => {
+export const getAuthUserInfo = async () => {
   const authenticatedUser = await Auth.currentAuthenticatedUser();
   const token = authenticatedUser.signInUserSession.idToken.jwtToken;
   const userId = authenticatedUser.attributes.sub;
@@ -198,4 +199,77 @@ export const useShoppingCart = () => {
     addProductToCart,
     removeProductFromCart,
   };
+};
+
+export const useGetOrder = (orderId: string) => {
+  const [order, setProduct] = useState<Order | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const requestData = await getCommonRequestData();
+
+      const data = await API.get("sallyapi", `/orders/${orderId}`, requestData);
+
+      setProduct(data.Item);
+      setIsLoading(false);
+    };
+
+    if (!order && orderId) {
+      getProduct();
+    }
+  }, [order, orderId]);
+
+  return { order, isLoading };
+};
+
+export const useGetOrders = (userId?: string | undefined) => {
+  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const requestData = await getCommonRequestData();
+
+      const data = await API.get("sallyapi", "/orders", {
+        ...requestData,
+        queryStringParameters: userId ? userId : null,
+      });
+
+      setOrders(data.Items);
+      setIsLoading(false);
+    };
+
+    if (!orders) {
+      getProducts();
+    }
+  }, [orders, userId]);
+
+  return { orders, isLoading };
+};
+
+export const useGetUserOrders = () => {
+  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const { userId } = await getAuthUserInfo();
+      const requestData = await getCommonRequestData();
+
+      const data = await API.get("sallyapi", "/orders", {
+        ...requestData,
+        queryStringParameters: { userId },
+      });
+
+      setOrders(data.Items);
+      setIsLoading(false);
+    };
+
+    if (!orders) {
+      getProducts();
+    }
+  }, [orders]);
+
+  return { orders, isLoading };
 };
