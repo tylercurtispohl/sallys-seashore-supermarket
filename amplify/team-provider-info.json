@@ -27,7 +27,10 @@
           "deploymentBucketName": "amplify-sally-main-102515-deployment",
           "s3Key": "amplify-builds/productCrud-6b677a434c5768644361-build.zip"
         },
-        "shoppingCartCrud": {}
+        "shoppingCartCrud": {
+          "deploymentBucketName": "amplify-sally-main-102515-deployment",
+          "s3Key": "amplify-builds/shoppingCartCrud-6e4f717a61766b394375-build.zip"
+        }
       },
       "api": {
         "sallyapi": {}
