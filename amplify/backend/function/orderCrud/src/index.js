@@ -7,9 +7,9 @@
 	STORAGE_SALLYDB_ARN
 	STORAGE_SALLYDB_NAME
 	STORAGE_SALLYDB_STREAMARN
-	STORAGE_SALLYORDERDB2_ARN
-	STORAGE_SALLYORDERDB2_NAME
-	STORAGE_SALLYORDERDB2_STREAMARN
+	STORAGE_SALLYORDERDB3_ARN
+	STORAGE_SALLYORDERDB3_NAME
+	STORAGE_SALLYORDERDB3_STREAMARN
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
@@ -58,7 +58,7 @@ exports.handler = async (event) => {
         // out the API gateway routing to create a proper /orders/{id} endpoint
         data = await docClient
           .get({
-            TableName: "orders-main",
+            TableName: "order-main",
             Key: { id: proxy },
           })
           .promise();
@@ -66,7 +66,7 @@ exports.handler = async (event) => {
         // get all orders for the specified user
         data = await docClient
           .query({
-            TableName: "orders-main",
+            TableName: "order-main",
             IndexName: "userId-index",
             KeyConditionExpression: "userId = :usrId",
             ExpressionAttributeValues: {
@@ -77,7 +77,7 @@ exports.handler = async (event) => {
       } else {
         // get all orders
         // TODO: improve performance by implementing pagination and avoiding a full table scan
-        data = await docClient.scan({ TableName: "orders-main" }).promise();
+        data = await docClient.scan({ TableName: "order-main" }).promise();
       }
 
       return {
@@ -110,7 +110,7 @@ const placeOrder = async (event) => {
     // first, create the order
     await docClient
       .put({
-        TableName: "orders-main",
+        TableName: "order-main",
         Item: putItem,
       })
       .promise();
@@ -188,7 +188,7 @@ const updateOrder = async (event) => {
   try {
     await docClient
       .put({
-        TableName: "orders-main",
+        TableName: "order-main",
         Item: putItem,
       })
       .promise();

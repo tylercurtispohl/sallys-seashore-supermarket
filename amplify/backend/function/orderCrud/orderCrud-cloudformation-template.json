@@ -40,17 +40,17 @@
       "Type": "String",
       "Default": "storagesallydbshoppingcartStreamArn"
     },
-    "storagesallyOrderDb2Name": {
+    "storagesallyOrderDb3Name": {
       "Type": "String",
-      "Default": "storagesallyOrderDb2Name"
+      "Default": "storagesallyOrderDb3Name"
     },
-    "storagesallyOrderDb2Arn": {
+    "storagesallyOrderDb3Arn": {
       "Type": "String",
-      "Default": "storagesallyOrderDb2Arn"
+      "Default": "storagesallyOrderDb3Arn"
     },
-    "storagesallyOrderDb2StreamArn": {
+    "storagesallyOrderDb3StreamArn": {
       "Type": "String",
-      "Default": "storagesallyOrderDb2StreamArn"
+      "Default": "storagesallyOrderDb3StreamArn"
     }
   },
   "Conditions": {
@@ -124,14 +124,14 @@
             "STORAGE_SALLYDBSHOPPINGCART_STREAMARN": {
               "Ref": "storagesallydbshoppingcartStreamArn"
             },
-            "STORAGE_SALLYORDERDB2_NAME": {
-              "Ref": "storagesallyOrderDb2Name"
+            "STORAGE_SALLYORDERDB3_NAME": {
+              "Ref": "storagesallyOrderDb3Name"
             },
-            "STORAGE_SALLYORDERDB2_ARN": {
-              "Ref": "storagesallyOrderDb2Arn"
+            "STORAGE_SALLYORDERDB3_ARN": {
+              "Ref": "storagesallyOrderDb3Arn"
             },
-            "STORAGE_SALLYORDERDB2_STREAMARN": {
-              "Ref": "storagesallyOrderDb2StreamArn"
+            "STORAGE_SALLYORDERDB3_STREAMARN": {
+              "Ref": "storagesallyOrderDb3StreamArn"
             }
           }
         },
@@ -327,14 +327,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagesallyOrderDb2Arn"
+                  "Ref": "storagesallyOrderDb3Arn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagesallyOrderDb2Arn"
+                        "Ref": "storagesallyOrderDb3Arn"
                       },
                       "index/*"
                     ]

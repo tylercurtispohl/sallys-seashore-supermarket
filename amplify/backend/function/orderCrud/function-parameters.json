@@ -14,7 +14,7 @@
         "update",
         "delete"
       ],
-      "sallyOrderDb2": [
+      "sallyOrderDb3": [
         "create",
         "read",
         "update",
