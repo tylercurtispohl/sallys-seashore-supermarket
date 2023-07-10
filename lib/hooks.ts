@@ -76,7 +76,9 @@ export const useGetProducts = () => {
 
 export const useShoppingCart = () => {
   const [cart, setCart] = useState<ShoppingCart | null>(null);
+  const [cartProducts, setCartProducts] = useState<Product[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCartProductsLoading, setIsCartProductsLoading] = useState(true);
 
   useEffect(() => {
     const getCart = async () => {
@@ -100,6 +102,32 @@ export const useShoppingCart = () => {
       getCart();
     }
   }, [cart]);
+
+  useEffect(() => {
+    const getCartProducts = async () => {
+      if (!cart) {
+        return;
+      }
+
+      const partialRequestData = await getCommonRequestData();
+
+      const requestData = {
+        ...partialRequestData,
+        queryStringParameters: {
+          ids: cart.productIds,
+        },
+      };
+
+      const data = await API.get("sallyapi", "/products", requestData);
+
+      setCartProducts(data.Items);
+      setIsCartProductsLoading(false);
+    };
+
+    if (cart && !cartProducts) {
+      getCartProducts();
+    }
+  }, [cart, cartProducts]);
 
   const addProductToCart = async (productId: string) => {
     let currentCart = cart;
@@ -162,5 +190,12 @@ export const useShoppingCart = () => {
     setCart(updatedCart);
   };
 
-  return { cart, isLoading, addProductToCart, removeProductFromCart };
+  return {
+    cart,
+    isLoading,
+    cartProducts,
+    isCartProductsLoading,
+    addProductToCart,
+    removeProductFromCart,
+  };
 };
