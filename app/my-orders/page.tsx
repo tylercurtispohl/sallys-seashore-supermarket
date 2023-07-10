@@ -2,13 +2,13 @@
 import { useGetUserOrders } from "@/lib/hooks";
 import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { sortBy } from "lodash";
+import { orderBy } from "lodash";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 
 const MyOrders = () => {
   const { orders, isLoading } = useGetUserOrders();
-  console.log(orders);
+
   return (
     <>
       {isLoading ? (
@@ -21,7 +21,7 @@ const MyOrders = () => {
             Your Orders
           </h1>
           {orders &&
-            orders.map((order) => (
+            orderBy(orders, ["createdAt"], ["desc"]).map((order) => (
               <div
                 key={order.id}
                 className="border-b-2 border-gray-200 mb-2 pb-2"
