@@ -47,18 +47,19 @@ exports.handler = async (event) => {
       };
     case "GET":
     default:
-      const { userId } = event.queryStringParameters;
+      const userId = event.queryStringParameters?.userId;
+      const proxy = event.pathParameters?.proxy;
 
       let data;
 
-      if (event.pathParameters?.proxy) {
+      if (proxy) {
         // assuming that proxy is an order ID
         // again, I know this is not a great pattern but I did not have time to figure
         // out the API gateway routing to create a proper /orders/{id} endpoint
         data = await docClient
           .get({
             TableName: "orders-main",
-            Key: { id: event.pathParameters.proxy },
+            Key: { id: proxy },
           })
           .promise();
       } else if (userId) {
