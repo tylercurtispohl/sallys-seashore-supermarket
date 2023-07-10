@@ -16,6 +16,22 @@
           "read"
         ]
       }
+    },
+    "/shoppingCart": {
+      "name": "/shoppingCart",
+      "lambdaFunction": "shoppingCartCrud",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
     }
   }
 }

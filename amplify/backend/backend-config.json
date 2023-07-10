@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "productCrud"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "shoppingCartCrud"
         }
       ],
       "providerPlugin": "awscloudformation",
