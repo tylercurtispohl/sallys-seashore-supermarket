@@ -86,7 +86,7 @@
             "StreamArn"
           ],
           "category": "storage",
-          "resourceName": "sallyOrderDb"
+          "resourceName": "sallyOrderDb2"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -208,7 +208,7 @@
     }
   },
   "storage": {
-    "sallyOrderDb": {
+    "sallyOrderDb2": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },

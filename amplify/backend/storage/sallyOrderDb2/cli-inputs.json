@@ -1,5 +1,5 @@
 {
-  "resourceName": "sallyOrderDb",
+  "resourceName": "sallyOrderDb2",
   "tableName": "orders",
   "partitionKey": {
     "fieldName": "id",
