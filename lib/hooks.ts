@@ -77,7 +77,7 @@ export const useGetProducts = () => {
 export const useShoppingCart = () => {
   const [cart, setCart] = useState<ShoppingCart | null>(null);
   const [cartProducts, setCartProducts] = useState<Product[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCartLoading, setIsLoading] = useState(true);
   const [isCartProductsLoading, setIsCartProductsLoading] = useState(true);
 
   useEffect(() => {
@@ -192,7 +192,7 @@ export const useShoppingCart = () => {
 
   return {
     cart,
-    isLoading,
+    isCartLoading,
     cartProducts,
     isCartProductsLoading,
     addProductToCart,
