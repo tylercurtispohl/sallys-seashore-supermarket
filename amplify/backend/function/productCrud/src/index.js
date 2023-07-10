@@ -69,12 +69,20 @@ exports.handler = async (event) => {
           Items: result.Responses["products-main"],
         };
       } else {
-        // TODO: improve performance by implementing pagination and avoiding a full table scan
         // check query string parameters for limit and lastEvaluatedKey
-        // if limit is non-existent or null then do a full table scan
-        // if lastEvaluatedKey exists then use that as the startExclusiveKey
+        // make them undefined if queryStringParameters is null
+        const limit = event.queryStringParameters?.limit ?? undefined;
+        const lastEvaluatedId =
+          event.queryStringParameters?.lastEvaluatedId ?? undefined;
+
         data = await docClient
-          .scan({ TableName: "products-main", Limit: 16 })
+          .scan({
+            TableName: "products-main",
+            Limit: limit,
+            ExclusiveStartKey: lastEvaluatedId
+              ? { id: lastEvaluatedId }
+              : undefined,
+          })
           .promise();
         console.log(`RETRIEVED DATA: ${JSON.stringify(data)}`);
       }
