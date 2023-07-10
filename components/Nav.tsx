@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Image from "next/image";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -26,7 +27,7 @@ const Nav = () => {
   const popoverId = isPopoverOpen ? "simple-popover" : undefined;
 
   return (
-    <nav className="flex flex-row justify-between w-full tracking-wider">
+    <nav className="flex flex-row w-full tracking-wider">
       <Link href="/">
         <Image
           src="/logos/logo-no-background.png"
@@ -36,78 +37,54 @@ const Nav = () => {
           className="object-contain"
         />
       </Link>
-      <Button
-        aria-describedby={popoverId}
-        variant="text"
-        onClick={handlePopoverAnchorClick}
-      >
-        <AccountCircleIcon className="text-cyan-500" />
-      </Button>
-      <Popover
-        id={popoverId}
-        open={isPopoverOpen}
-        anchorEl={popoverAnchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        <div className="flex flex-col gap-2 p-3 text-cyan-600">
-          <Link
-            href="/my-orders"
-            className="text-md w-full text-center hover:text-cyan-800 hover:underline"
-            onClick={() => handlePopoverClose()}
-          >
-            {/* <Button
-              variant="text"
-              className="p-5 w-full text-cyan-800"
+      <div className="flex flex-row justify-end flex-grow">
+        <Button
+          aria-describedby={popoverId}
+          variant="text"
+          onClick={handlePopoverAnchorClick}
+        >
+          <AccountCircleIcon className="text-cyan-500" />
+        </Button>
+        <Popover
+          id={popoverId}
+          open={isPopoverOpen}
+          anchorEl={popoverAnchorEl}
+          onClose={handlePopoverClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <div className="flex flex-col gap-2 p-3 text-cyan-600">
+            <Link
+              href="/my-orders"
+              className="text-md w-full text-center hover:text-cyan-800 hover:underline"
               onClick={() => handlePopoverClose()}
             >
               My Orders
-            </Button> */}
-            My Orders
-          </Link>
-          <Link
-            href="/order-admin"
-            className="text-md w-full text-center hover:text-cyan-800 hover:underline"
-            onClick={() => handlePopoverClose()}
-          >
-            {/* <Button
-              variant="text"
-              className="w-full text-cyan-800"
+            </Link>
+            <Link
+              href="/order-admin"
+              className="text-md w-full text-center hover:text-cyan-800 hover:underline"
               onClick={() => handlePopoverClose()}
             >
               Order Admin
-            </Button> */}
-            Order Admin
-          </Link>
-          <Link
-            href="/product-admin"
-            className="text-md w-full text-center hover:text-cyan-800 hover:underline"
-            onClick={() => handlePopoverClose()}
-          >
-            {/* <Button
-              variant="text"
-              className="p-5 w-full text-cyan-800"
+            </Link>
+            <Link
+              href="/product-admin"
+              className="text-md w-full text-center hover:text-cyan-800 hover:underline"
               onClick={() => handlePopoverClose()}
             >
               Product Admin
-            </Button> */}
-            Product Admin
+            </Link>
+          </div>
+        </Popover>
+        <Button variant="text">
+          <Link href="/shopping-cart">
+            <ShoppingCartIcon className="text-cyan-500" />
           </Link>
-
-          {/* <div className="w-full text-blue-900 text-md">
-            <Button
-              variant="text"
-              className="p-5 w-full"
-              onClick={() => signOut()}
-            >
-              Sign Out
-            </Button>
-          </div> */}
-        </div>
-      </Popover>
+        </Button>
+      </div>
     </nav>
   );
 };
