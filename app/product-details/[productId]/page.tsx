@@ -1,13 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
-import ProductForm from "@/components/ProductForm";
-import { Product } from "@/types/product";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetProduct } from "@/lib/hooks";
 import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
 import { S3_BUCKET_URL } from "@/lib/utils";
-import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
 // This is for formatting the price as U.S. currency
