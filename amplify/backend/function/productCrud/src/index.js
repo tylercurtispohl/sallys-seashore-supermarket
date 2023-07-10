@@ -70,7 +70,13 @@ exports.handler = async (event) => {
         };
       } else {
         // TODO: improve performance by implementing pagination and avoiding a full table scan
-        data = await docClient.scan({ TableName: "products-main" }).promise();
+        // check query string parameters for limit and lastEvaluatedKey
+        // if limit is non-existent or null then do a full table scan
+        // if lastEvaluatedKey exists then use that as the startExclusiveKey
+        data = await docClient
+          .scan({ TableName: "products-main", Limit: 16 })
+          .promise();
+        console.log(`RETRIEVED DATA: ${JSON.stringify(data)}`);
       }
 
       return {
