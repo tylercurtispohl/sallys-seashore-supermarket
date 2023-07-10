@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "shoppingCartCrud"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "orderCrud"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -50,6 +58,40 @@
     }
   },
   "function": {
+    "orderCrud": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "sallydb"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "sallydbshoppingcart"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "sallyOrderDb"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "productCrud": {
       "build": true,
       "dependsOn": [
@@ -100,6 +142,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_orderCrud_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "orderCrud"
+        }
+      ]
+    },
+    "AMPLIFY_function_orderCrud_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "orderCrud"
+        }
+      ]
+    },
     "AMPLIFY_function_productCrud_deploymentBucketName": {
       "usedBy": [
         {
@@ -150,6 +208,10 @@
     }
   },
   "storage": {
+    "sallyOrderDb": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "sallydb": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

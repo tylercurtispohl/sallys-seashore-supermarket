@@ -30,6 +30,10 @@
         "shoppingCartCrud": {
           "deploymentBucketName": "amplify-sally-main-102515-deployment",
           "s3Key": "amplify-builds/shoppingCartCrud-4f59544b2b4261797644-build.zip"
+        },
+        "orderCrud": {
+          "deploymentBucketName": "amplify-sally-main-102515-deployment",
+          "s3Key": "amplify-builds/orderCrud-76726d6a376478515331-build.zip"
         }
       },
       "api": {
@@ -38,7 +42,8 @@
       "storage": {
         "sallydb": {},
         "sallystorage2": {},
-        "sallydbshoppingcart": {}
+        "sallydbshoppingcart": {},
+        "sallyOrderDb": {}
       }
     }
   }

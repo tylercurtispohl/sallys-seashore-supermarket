@@ -38,6 +38,7 @@ exports.handler = async (event) => {
     case "GET":
     default:
       let data;
+
       if (event.pathParameters?.proxy) {
         // assuming that proxy is a product ID
         // I know this is not a great idea but its what I'm going with for now

@@ -32,6 +32,22 @@
           "read"
         ]
       }
+    },
+    "/orders": {
+      "name": "/orders",
+      "lambdaFunction": "orderCrud",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
     }
   }
 }

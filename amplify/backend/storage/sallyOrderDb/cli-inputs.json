@@ -1,0 +1,48 @@
+{
+  "resourceName": "sallyOrderDb",
+  "tableName": "orders",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "name",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "nameCreatedAt-index",
+      "partitionKey": {
+        "fieldName": "name",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "createdAt",
+        "fieldType": "string"
+      }
+    },
+    {
+      "name": "createdAtName-index",
+      "partitionKey": {
+        "fieldName": "createdAt",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "name",
+        "fieldType": "string"
+      }
+    },
+    {
+      "name": "userIdCreatedAt-index",
+      "partitionKey": {
+        "fieldName": "userId",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "createdAt",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}
