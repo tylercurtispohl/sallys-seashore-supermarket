@@ -92,7 +92,7 @@ const ProductForm = ({
 
   return (
     <>
-      <h1 className="text-center text-xl font-semibold tracking-wider text-cyan-500">
+      <h1 className="text-center text-xl tracking-wide text-gray-900">
         {mode === "create" ? "Create" : "Edit"} Product
       </h1>
       <form onSubmit={formik.handleSubmit}>
@@ -196,7 +196,7 @@ const ProductForm = ({
                 Cancel
               </Button>
               <Button type="submit" variant="outlined" color="primary">
-                Submit
+                {mode === "create" ? "Create" : "Update"} Product
               </Button>
             </div>
           </Grid>
