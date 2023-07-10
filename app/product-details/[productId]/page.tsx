@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 // This is for formatting the price as U.S. currency
 // From this SO question: https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
-export const currencyFormatter = new Intl.NumberFormat("en-US", {
+const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
