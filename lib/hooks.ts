@@ -2,6 +2,7 @@ import { Amplify, API, Auth } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useState, useEffect } from "react";
 import { Product } from "@/types/product";
+import { ShoppingCart } from "@/types/shoppingCart";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -16,7 +17,7 @@ const getAuthUserInfo = async () => {
 };
 
 const getCommonRequestData = async () => {
-  const { token } = await getAuthUserInfo();
+  const { token, userId } = await getAuthUserInfo();
 
   return {
     headers: {
@@ -71,4 +72,95 @@ export const useGetProducts = () => {
   }, [products]);
 
   return { products, isLoading };
+};
+
+export const useShoppingCart = () => {
+  const [cart, setCart] = useState<ShoppingCart | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getCart = async () => {
+      const { userId } = await getAuthUserInfo();
+      const partialRequestData = await getCommonRequestData();
+
+      const requestData = {
+        ...partialRequestData,
+        queryStringParameters: {
+          userId,
+        },
+      };
+
+      const data = await API.get("sallyapi", "/shoppingCart", requestData);
+
+      setCart(data.Items[0]);
+      setIsLoading(false);
+    };
+
+    if (!cart) {
+      getCart();
+    }
+  }, [cart]);
+
+  const addProductToCart = async (productId: string) => {
+    let currentCart = cart;
+
+    if (!currentCart) {
+      // if cart does not exist - start a new one
+      const { userId } = await getAuthUserInfo();
+
+      currentCart = {
+        userId,
+        productIds: [],
+      };
+    }
+
+    if (currentCart?.productIds.includes(productId)) {
+      // There is no need to add the product if it is already in the cart
+      return;
+    }
+
+    const partialRequestData = await getCommonRequestData();
+
+    const requestData = {
+      ...partialRequestData,
+      body: {
+        ...currentCart,
+        productIds: [...(currentCart?.productIds ?? []), productId],
+      },
+    };
+
+    const updatedCart = await API.post(
+      "sallyapi",
+      "/shoppingCart",
+      requestData
+    );
+
+    setCart(updatedCart);
+  };
+
+  const removeProductFromCart = async (productId: string) => {
+    if (!cart || !cart.productIds.includes(productId)) {
+      return;
+    }
+
+    const partialRequestData = await getCommonRequestData();
+
+    const requestData = {
+      ...partialRequestData,
+      body: {
+        ...cart,
+        productIds: cart.productIds.filter((id) => id !== productId),
+      },
+    };
+
+    const updatedCart = await API.post(
+      "sallyapi",
+      "/shoppingCart",
+      requestData
+    );
+
+    setCart(updatedCart);
+  };
+
+  return { cart, isLoading, addProductToCart, removeProductFromCart };
 };

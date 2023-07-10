@@ -1,6 +1,6 @@
 "use client";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useGetProduct } from "@/lib/hooks";
+import { useGetProduct, useShoppingCart } from "@/lib/hooks";
 import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
 import { S3_BUCKET_URL } from "@/lib/utils";
@@ -15,6 +15,7 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 
 const ProductDetails = ({ params }: { params: { productId: string } }) => {
   const { product, isLoading } = useGetProduct(params.productId);
+  const { cart, addProductToCart, removeProductFromCart } = useShoppingCart();
 
   return (
     <div>
@@ -43,9 +44,26 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
               <p className="text-gray-800 tracking-wide">
                 {product.stockQuantity ? "In" : "Out of"} Stock
               </p>
-              <Button variant="outlined" color="primary" className="mt-2">
-                Add to Cart
-              </Button>
+              {!cart?.productIds.includes(product.id) && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  className="mt-2"
+                  onClick={() => addProductToCart(product.id)}
+                >
+                  Add to Cart
+                </Button>
+              )}
+              {cart?.productIds.includes(product.id) && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  className="mt-2"
+                  onClick={() => removeProductFromCart(product.id)}
+                >
+                  Remove from Cart
+                </Button>
+              )}
             </Grid>
             <Grid xs={12}>
               <h1 className="text-gray-900 text-xl tracking-wide">
