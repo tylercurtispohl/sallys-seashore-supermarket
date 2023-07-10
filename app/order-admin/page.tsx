@@ -18,7 +18,7 @@ const OrderAdmin = () => {
       ) : (
         <>
           <h1 className="tracking-wide text-gray-900 text-xl my-5">
-            All Orders
+            Order Admin
           </h1>
           {orders &&
             orderBy(orders, ["createdAt"], ["desc"]).map((order) => (
