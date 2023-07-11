@@ -18,7 +18,7 @@ const EditOrder = ({ params }: { params: { orderId: string } }) => {
           {order && (
             <>
               <EditOrderForm order={order} />
-              <OrderProductsList products={order?.products} />
+              <OrderProductsList mode="order" products={order?.products} />
             </>
           )}
         </>
