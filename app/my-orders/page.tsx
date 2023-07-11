@@ -23,7 +23,7 @@ const MyOrders = () => {
           <h1 className="tracking-wide text-gray-900 text-xl my-5">
             Your Orders
           </h1>
-          {orders &&
+          {orders && orders.length ? (
             orderBy(orders, ["createdAt"], ["desc"]).map((order) => (
               <Link key={order.id} href={`/order-details/${order.id}`}>
                 <div className="border-b-2 border-gray-200 mb-4 pb-4">
@@ -67,7 +67,12 @@ const MyOrders = () => {
                   </Grid>
                 </div>
               </Link>
-            ))}
+            ))
+          ) : (
+            <p className="text-lg text-gray-900 tracking-wide">
+              You do not have any orders yet! Go buy some seashells!
+            </p>
+          )}
         </>
       )}
     </>
