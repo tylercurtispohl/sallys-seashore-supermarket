@@ -1,0 +1,25 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "sallydb": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "sallydbshoppingcart": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "sallyOrderDb3": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
