@@ -134,22 +134,27 @@ const placeOrder = async (event) => {
 
     const products = productQueryResult.Responses["products-main"];
 
+    // create updates for batchWrite
+    const putRequestItems = products.map((p) => {
+      const orderProduct = orderProducts.find((op) => op.id === p.id);
+      const quantity = orderProduct?.quantity;
+
+      return {
+        PutRequest: {
+          Item: {
+            ...p,
+            stockQuantity: p.stockQuantity - (quantity ?? 1),
+            updatedAt: now,
+          },
+        },
+      };
+    });
+
     // update the stock quantity on all the products
     await docClient
       .batchWrite({
         RequestItems: {
-          "products-main": products.map((p) => ({
-            PutRequest: {
-              Item: {
-                ...p,
-                // This assumes a user can only order one
-                // of each item in the cart. This may need
-                // to change later.
-                stockQuantity: p.stockQuantity - 1,
-                updatedAt: now,
-              },
-            },
-          })),
+          "products-main": putRequestItems,
         },
       })
       .promise();
