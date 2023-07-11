@@ -1,5 +1,7 @@
 import { Product } from "./product";
 
+export type OrderProduct = Product & { quantity: number };
+
 export type Order = {
   addressLine1: string;
   addressLine2?: string | null | undefined;
@@ -8,7 +10,8 @@ export type Order = {
   id?: string | null | undefined;
   name: string;
   postalCode: string;
-  products: Product[];
+  products: OrderProduct[];
+  shippingCompany?: string | null | undefined;
   shippingMethod?: string | null | undefined;
   state: string;
   status: "processing" | "shipped" | "cancelled" | "delivered";

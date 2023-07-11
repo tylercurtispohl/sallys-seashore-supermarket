@@ -31,6 +31,7 @@ const validationSchema = yup.object({
   state: yup.string().required("State is required"),
   postalCode: yup.string().required("Postal Code is required"),
   status: yup.string().notRequired(),
+  shippingCompany: yup.string().notRequired(),
   trackingNumber: yup.string().notRequired(),
 });
 
@@ -59,6 +60,7 @@ const EditOrderForm = ({ order }: { order: Order }) => {
       state: order.state || "",
       postalCode: order.postalCode || "",
       status: order.status || "",
+      shippingCompany: order.shippingCompany || "",
       trackingNumber: order.trackingNumber || "",
     },
     validationSchema: validationSchema,
@@ -202,6 +204,24 @@ const EditOrderForm = ({ order }: { order: Order }) => {
             </FormControl>
           </Grid>
           <Grid xs={12} md={6}>
+            <TextField
+              fullWidth
+              id="shippingCompany_input"
+              name="shippingCompany"
+              label="Shipping Company"
+              variant="standard"
+              value={formik.values.shippingCompany}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.shippingCompany &&
+                Boolean(formik.errors.shippingCompany)
+              }
+              helperText={
+                formik.touched.shippingCompany && formik.errors.shippingCompany
+              }
+            ></TextField>
+          </Grid>
+          <Grid xs={12}>
             <TextField
               fullWidth
               id="trackingNumber_input"

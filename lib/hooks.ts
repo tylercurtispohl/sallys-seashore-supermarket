@@ -3,7 +3,7 @@ import awsconfig from "../src/aws-exports";
 import { useState, useEffect, useCallback } from "react";
 import { Product } from "@/types/product";
 import { ShoppingCart } from "@/types/shoppingCart";
-import { Order } from "@/types/order";
+import { Order, OrderProduct } from "@/types/order";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -120,9 +120,10 @@ export const usePaginatedGetProducts = () => {
 
 export const useShoppingCart = () => {
   const [cart, setCart] = useState<ShoppingCart | null>(null);
-  const [cartProducts, setCartProducts] = useState<Product[] | null>(null);
+  // const [cartProducts, setCartProducts] = useState<Product[] | null>(null);
   const [isCartLoading, setIsLoading] = useState(true);
   const [isCartProductsLoading, setIsCartProductsLoading] = useState(true);
+  const [isUpdatingCart, setIsUpdatingCart] = useState(false);
 
   useEffect(() => {
     const getCart = async () => {
@@ -147,33 +148,33 @@ export const useShoppingCart = () => {
     }
   }, [cart]);
 
-  useEffect(() => {
-    const getCartProducts = async () => {
-      if (!cart) {
-        return;
-      }
+  // useEffect(() => {
+  //   const getCartProducts = async () => {
+  //     if (!cart) {
+  //       return;
+  //     }
 
-      const partialRequestData = await getCommonRequestData();
+  //     const partialRequestData = await getCommonRequestData();
 
-      const requestData = {
-        ...partialRequestData,
-        queryStringParameters: {
-          ids: cart.productIds,
-        },
-      };
+  //     const requestData = {
+  //       ...partialRequestData,
+  //       queryStringParameters: {
+  //         ids: cart.productIds,
+  //       },
+  //     };
 
-      const data = await API.get("sallyapi", "/products", requestData);
+  //     const data = await API.get("sallyapi", "/products", requestData);
 
-      setCartProducts(data.Items);
-      setIsCartProductsLoading(false);
-    };
+  //     setCartProducts(data.Items);
+  //     setIsCartProductsLoading(false);
+  //   };
 
-    if (cart && !cartProducts) {
-      getCartProducts();
-    }
-  }, [cart, cartProducts]);
+  //   if (cart && !cartProducts) {
+  //     getCartProducts();
+  //   }
+  // }, [cart, cartProducts]);
 
-  const addProductToCart = async (productId: string) => {
+  const addProductToCart = async (orderProduct: OrderProduct) => {
     let currentCart = cart;
 
     if (!currentCart) {
@@ -182,11 +183,11 @@ export const useShoppingCart = () => {
 
       currentCart = {
         userId,
-        productIds: [],
+        products: [],
       };
     }
 
-    if (currentCart?.productIds.includes(productId)) {
+    if (currentCart?.products.find((p) => p.id === orderProduct.id)) {
       // There is no need to add the product if it is already in the cart
       return;
     }
@@ -197,7 +198,10 @@ export const useShoppingCart = () => {
       ...partialRequestData,
       body: {
         ...currentCart,
-        productIds: [...(currentCart?.productIds ?? []), productId],
+        products: [
+          ...(currentCart?.products ?? []),
+          { ...orderProduct, quantity: orderProduct.quantity ?? 1 },
+        ],
       },
     };
 
@@ -210,8 +214,8 @@ export const useShoppingCart = () => {
     setCart(updatedCart);
   };
 
-  const removeProductFromCart = async (productId: string) => {
-    if (!cart || !cart.productIds.includes(productId)) {
+  const removeProductFromCart = async (product: OrderProduct) => {
+    if (!cart || !cart.products.find((p) => p.id === product.id)) {
       return;
     }
 
@@ -221,7 +225,7 @@ export const useShoppingCart = () => {
       ...partialRequestData,
       body: {
         ...cart,
-        productIds: cart.productIds.filter((id) => id !== productId),
+        products: cart.products.filter((p) => p.id !== product.id),
       },
     };
 
@@ -234,13 +238,56 @@ export const useShoppingCart = () => {
     setCart(updatedCart);
   };
 
+  const adjustProductQuantity = async (
+    orderProduct: OrderProduct,
+    quantity: number
+  ) => {
+    if (!cart || !cart.products.find((p) => p.id === orderProduct.id)) {
+      return;
+    }
+
+    setIsUpdatingCart(true);
+
+    const partialRequestData = await getCommonRequestData();
+
+    const cartProducts = [...cart.products];
+    const productToUpdate = cartProducts.find(
+      (cp) => cp.id === orderProduct.id
+    );
+
+    if (!productToUpdate) {
+      return;
+    }
+
+    productToUpdate.quantity = quantity;
+
+    const requestData = {
+      ...partialRequestData,
+      body: {
+        ...cart,
+        products: cartProducts,
+      },
+    };
+
+    const updatedCart = await API.post(
+      "sallyapi",
+      "/shoppingCart",
+      requestData
+    );
+
+    setCart(updatedCart);
+    setIsUpdatingCart(false);
+  };
+
   return {
     cart,
     isCartLoading,
-    cartProducts,
+    // cartProducts,
     isCartProductsLoading,
+    isUpdatingCart,
     addProductToCart,
     removeProductFromCart,
+    adjustProductQuantity,
   };
 };
 

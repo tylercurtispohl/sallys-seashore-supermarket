@@ -24,7 +24,8 @@ const validationSchema = yup.object({
 });
 
 const ShoppingCart = () => {
-  const { cart, cartProducts, isCartLoading } = useShoppingCart();
+  const { cart, isCartLoading, adjustProductQuantity, isUpdatingCart } =
+    useShoppingCart();
 
   const router = useRouter();
 
@@ -44,7 +45,7 @@ const ShoppingCart = () => {
       const orderData = {
         ...values,
         shoppingCartId: cart?.id,
-        products: cartProducts,
+        products: cart?.products ?? [],
         userId,
       };
 
@@ -70,8 +71,13 @@ const ShoppingCart = () => {
         </div>
       ) : (
         <>
-          {cartProducts ? (
-            <OrderProductsList products={cartProducts} />
+          {cart?.products ? (
+            <OrderProductsList
+              products={cart.products}
+              mode="cart"
+              adjustProductQuantity={adjustProductQuantity}
+              isCartUpdating={isUpdatingCart}
+            />
           ) : (
             <h1 className="text-xl tracking-wider my-5">Your cart is empty</h1>
           )}
@@ -207,7 +213,7 @@ const ShoppingCart = () => {
                     type="submit"
                     variant="outlined"
                     color="primary"
-                    disabled={!cartProducts}
+                    disabled={!cart?.products}
                   >
                     Place Order
                   </Button>

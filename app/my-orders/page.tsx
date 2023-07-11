@@ -38,6 +38,9 @@ const MyOrders = () => {
                           )}
                         </p>
                         <p>Status: {order.status}</p>
+                        {order.shippingCompany && (
+                          <p>Shipping Company: {order.shippingCompany}</p>
+                        )}
                         {order.trackingNumber && (
                           <p>Tracking Number: {order.trackingNumber}</p>
                         )}
@@ -57,6 +60,7 @@ const MyOrders = () => {
                             alt={`Image for ${product.name}`}
                           />
                           <p>{product.name}</p>
+                          <p>x{product.quantity}</p>
                         </div>
                       ))}
                     </Grid>

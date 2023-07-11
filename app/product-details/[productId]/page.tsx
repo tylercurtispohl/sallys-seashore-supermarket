@@ -44,23 +44,26 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
               <p className="text-gray-800 tracking-wide">
                 {product.stockQuantity ? "In" : "Out of"} Stock
               </p>
-              {!cart?.productIds.includes(product.id) && (
+              {/* TODO: allow adjusting quantity here - right now it assumes 1 */}
+              {!cart?.products.find((p) => p.id === product.id) && (
                 <Button
                   variant="outlined"
                   color="primary"
                   className="mt-2"
-                  onClick={() => addProductToCart(product.id)}
+                  onClick={() => addProductToCart({ ...product, quantity: 1 })}
                   disabled={!product.stockQuantity}
                 >
                   Add to Cart
                 </Button>
               )}
-              {cart?.productIds.includes(product.id) && (
+              {cart?.products.find((p) => p.id === product.id) && (
                 <Button
                   variant="outlined"
                   color="error"
                   className="mt-2"
-                  onClick={() => removeProductFromCart(product.id)}
+                  onClick={() =>
+                    removeProductFromCart({ ...product, quantity: 1 })
+                  }
                 >
                   Remove from Cart
                 </Button>

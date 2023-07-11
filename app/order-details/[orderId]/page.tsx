@@ -45,7 +45,7 @@ const OrderDetails = ({ params }: { params: { orderId: string } }) => {
             <p className="text-lg tracking-wide text-gray-900 mb-5">
               {order.city}, {order.state} {order.postalCode}
             </p>
-            <OrderProductsList products={order.products} />
+            <OrderProductsList mode="order" products={order.products} />
           </>
         )
       )}
