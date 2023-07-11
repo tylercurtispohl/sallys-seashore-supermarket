@@ -1,5 +1,4 @@
 "use client";
-import { getAuthUserInfo, useGetOrder } from "@/lib/hooks";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -19,6 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { DateTime } from "luxon";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -85,7 +85,10 @@ const EditOrderForm = ({ order }: { order: Order }) => {
         Edit Order {order.id}
       </h1>
       <p className="text-lg tracking-wide text-gray-900 text-center w-full">
-        Created {order.createdAt}
+        Created{" "}
+        {DateTime.fromISO(order.createdAt).toLocaleString(
+          DateTime.DATETIME_SHORT
+        )}
       </p>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>

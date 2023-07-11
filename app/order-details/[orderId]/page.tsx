@@ -2,6 +2,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetOrder } from "@/lib/hooks";
 import OrderProductsList from "@/components/OrderProductsList";
+import { DateTime } from "luxon";
 
 const OrderDetails = ({ params }: { params: { orderId: string } }) => {
   const { order, isLoading } = useGetOrder(params.orderId);
@@ -18,7 +19,10 @@ const OrderDetails = ({ params }: { params: { orderId: string } }) => {
               Order {order.id}
             </h1>
             <p className="text-lg tracking-wide text-gray-900">
-              Created: {order.createdAt}
+              Created:{" "}
+              {DateTime.fromISO(order.createdAt).toLocaleString(
+                DateTime.DATETIME_SHORT
+              )}
             </p>
             <p className="text-lg tracking-wide text-gray-900">
               Status: {order.status}

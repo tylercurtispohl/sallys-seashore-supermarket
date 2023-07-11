@@ -7,6 +7,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import Image from "next/image";
 import { S3_BUCKET_URL } from "@/lib/utils";
+import { DateTime } from "luxon";
 
 const MyOrders = () => {
   const { orders, isLoading } = useGetUserOrders();
@@ -24,25 +25,25 @@ const MyOrders = () => {
           </h1>
           {orders &&
             orderBy(orders, ["createdAt"], ["desc"]).map((order) => (
-              <div
-                key={order.id}
-                className="border-b-2 border-gray-200 mb-4 pb-4"
-              >
-                <Grid container spacing={2}>
-                  <Grid xs={12} md={6}>
-                    <Link href={`/order-details/${order.id}`}>
+              <Link key={order.id} href={`/order-details/${order.id}`}>
+                <div className="border-b-2 border-gray-200 mb-4 pb-4">
+                  <Grid container spacing={2}>
+                    <Grid xs={12} md={6}>
                       <div className="text-gray-900 tracking-wide">
                         <p>{order.id}</p>
-                        <p>Created: {order.createdAt}</p>
+                        <p>
+                          Created:{" "}
+                          {DateTime.fromISO(order.createdAt).toLocaleString(
+                            DateTime.DATETIME_SHORT
+                          )}
+                        </p>
                         <p>Status: {order.status}</p>
                         {order.trackingNumber && (
                           <p>Tracking Number: {order.trackingNumber}</p>
                         )}
                       </div>
-                    </Link>
-                  </Grid>
-                  <Grid xs={12} md={6}>
-                    <Link href={`/order-details/${order.id}`}>
+                    </Grid>
+                    <Grid xs={12} md={6}>
                       <p>Items:</p>
                       {order.products.map((product) => (
                         <div
@@ -58,10 +59,10 @@ const MyOrders = () => {
                           <p>{product.name}</p>
                         </div>
                       ))}
-                    </Link>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </div>
+                </div>
+              </Link>
             ))}
         </>
       )}
