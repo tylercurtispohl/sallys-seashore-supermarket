@@ -40,11 +40,7 @@ const ProductList = ({
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
     >
       {products.map((p) => (
-        <Card
-          key={p.id}
-          className="cursor-pointer"
-          onClick={() => console.log("clicked")}
-        >
+        <Card key={p.id} className="cursor-pointer">
           <CardActionArea href={`${actionLink}/${p.id}`}>
             <CardMedia
               image={`${S3_BUCKET_URL}${p.imageKey}`}
