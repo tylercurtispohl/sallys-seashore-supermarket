@@ -1,6 +1,6 @@
 import { Amplify, API, Auth } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Product } from "@/types/product";
 import { ShoppingCart } from "@/types/shoppingCart";
 import { Order } from "@/types/order";
@@ -73,6 +73,49 @@ export const useGetProducts = () => {
   }, [products]);
 
   return { products, isLoading };
+};
+
+export const usePaginatedGetProducts = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [lastEvaluatedId, setLastEvaluatedId] = useState<string | undefined>();
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchNextProducts = useCallback(async () => {
+    const requestData = await getCommonRequestData();
+
+    const data = await API.get("sallyapi", "/products", {
+      ...requestData,
+      queryStringParameters: {
+        limit: 24,
+        lastEvaluatedId,
+      },
+    });
+
+    if (data.LastEvaluatedKey?.id) {
+      setLastEvaluatedId(data.LastEvaluatedKey.id);
+      setHasMore(true);
+    } else {
+      setLastEvaluatedId(undefined);
+      setHasMore(false);
+    }
+
+    const newProductList = [...products, ...data.Items];
+    setProducts(newProductList);
+  }, [products, lastEvaluatedId]);
+
+  // call fetchNextProducts on the initial render
+  useEffect(() => {
+    if (products.length === 0) {
+      fetchNextProducts();
+    }
+  }, [products, fetchNextProducts]);
+
+  return {
+    products,
+    lastEvaluatedId,
+    hasMore,
+    fetchProducts: fetchNextProducts,
+  };
 };
 
 export const useShoppingCart = () => {
