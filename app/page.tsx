@@ -10,7 +10,7 @@ Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
 
 const withAuthenticatorOptions = {
-  hideSignUp: false,
+  hideSignUp: true,
 };
 
 export default withAuthenticator(function Home({ signOut, user }) {
