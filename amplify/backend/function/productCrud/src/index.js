@@ -108,7 +108,7 @@ const deleteProduct = async (event) => {
   await docClient
     .delete({
       TableName: "products-main",
-      key: { id: event.pathParameters.proxy },
+      Key: { id: event.pathParameters.proxy },
     })
     .promise();
 
