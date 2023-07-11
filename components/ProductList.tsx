@@ -8,8 +8,9 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { useGetProducts } from "@/lib/hooks";
+import { usePaginatedGetProducts } from "@/lib/hooks";
 import { S3_BUCKET_URL } from "@/lib/utils";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // This is for formatting the price as U.S. currency
 // From this SO question: https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
@@ -25,54 +26,53 @@ const ProductList = ({
   actionLink: string;
   showStockQuantity?: boolean | undefined;
 }) => {
-  const { products, isLoading } = useGetProducts();
+  const { products, fetchProducts, hasMore } = usePaginatedGetProducts();
 
   return (
-    <div>
-      {isLoading ? (
+    <InfiniteScroll
+      dataLength={products.length}
+      next={fetchProducts}
+      hasMore={hasMore}
+      loader={
         <div className="flex flex-row justify-around">
           <CircularProgress />
         </div>
-      ) : (
-        products && (
-          <Grid container spacing={3}>
-            {products.map((p) => (
-              <Grid key={p.id} xs={12} sm={6} lg={4} xl={3}>
-                <Card
-                  className="cursor-pointer"
-                  onClick={() => console.log("clicked")}
-                >
-                  <CardActionArea href={`${actionLink}/${p.id}`}>
-                    <CardMedia
-                      image={`${S3_BUCKET_URL}${p.imageKey}`}
-                      title={`${p.name}`}
-                      className="h-52"
-                    />
-                    <CardContent>
-                      <Typography
-                        variant="h6"
-                        component="div"
-                        className="text-ellipsis"
-                      >
-                        {p.name}
-                      </Typography>
-                      <Typography variant="body1" component="p">
-                        {currencyFormatter.format(p.price)}
-                      </Typography>
-                      {showStockQuantity && (
-                        <Typography variant="body1" component="p">
-                          {p.stockQuantity} in stock
-                        </Typography>
-                      )}
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )
-      )}
-    </div>
+      }
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
+    >
+      {products.map((p) => (
+        <Card
+          key={p.id}
+          className="cursor-pointer"
+          onClick={() => console.log("clicked")}
+        >
+          <CardActionArea href={`${actionLink}/${p.id}`}>
+            <CardMedia
+              image={`${S3_BUCKET_URL}${p.imageKey}`}
+              title={`${p.name}`}
+              className="h-52"
+            />
+            <CardContent>
+              <Typography
+                variant="h6"
+                component="div"
+                className="text-ellipsis"
+              >
+                {p.name}
+              </Typography>
+              <Typography variant="body1" component="p">
+                {currencyFormatter.format(p.price)}
+              </Typography>
+              {showStockQuantity && (
+                <Typography variant="body1" component="p">
+                  {p.stockQuantity} in stock
+                </Typography>
+              )}
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      ))}
+    </InfiniteScroll>
   );
 };
 
