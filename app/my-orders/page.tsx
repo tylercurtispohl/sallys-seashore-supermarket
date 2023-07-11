@@ -5,6 +5,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { orderBy } from "lodash";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
+import Image from "next/image";
+import { S3_BUCKET_URL } from "@/lib/utils";
 
 const MyOrders = () => {
   const { orders, isLoading } = useGetUserOrders();
@@ -24,7 +26,7 @@ const MyOrders = () => {
             orderBy(orders, ["createdAt"], ["desc"]).map((order) => (
               <div
                 key={order.id}
-                className="border-b-2 border-gray-200 mb-2 pb-2"
+                className="border-b-2 border-gray-200 mb-4 pb-4"
               >
                 <Grid container spacing={2}>
                   <Grid xs={12} md={6}>
@@ -43,7 +45,18 @@ const MyOrders = () => {
                     <Link href={`/order-details/${order.id}`}>
                       <p>Items:</p>
                       {order.products.map((product) => (
-                        <p key={product.id}>{product.name}</p>
+                        <div
+                          key={product.id}
+                          className="flex flex-row gap-2 mb-2"
+                        >
+                          <Image
+                            src={`${S3_BUCKET_URL}${product.imageKey}`}
+                            height={50}
+                            width={50}
+                            alt={`Image for ${product.name}`}
+                          />
+                          <p>{product.name}</p>
+                        </div>
                       ))}
                     </Link>
                   </Grid>
