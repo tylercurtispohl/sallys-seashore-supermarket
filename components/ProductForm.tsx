@@ -12,6 +12,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { S3_BUCKET_URL } from "@/lib/utils";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Storage.configure(awsconfig);
@@ -41,6 +46,19 @@ const ProductForm = ({
   product?: Product | undefined;
 }) => {
   const router = useRouter();
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+  const handleCancelDialogOpen = () => {
+    setCancelDialogOpen(true);
+  };
+
+  const handleCancelDialogClose = (doCancel: boolean) => {
+    setCancelDialogOpen(false);
+
+    if (doCancel) {
+      router.back();
+    }
+  };
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -191,7 +209,7 @@ const ProductForm = ({
                 type="button"
                 variant="text"
                 color="error"
-                onClick={() => router.back()}
+                onClick={handleCancelDialogOpen}
               >
                 Cancel
               </Button>
@@ -202,6 +220,27 @@ const ProductForm = ({
           </Grid>
         </Grid>
       </form>
+      <Dialog
+        open={cancelDialogOpen}
+        onClose={handleCancelDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to cancel and go back?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleCancelDialogClose(false)} color="error">
+            No
+          </Button>
+          <Button onClick={() => handleCancelDialogClose(true)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

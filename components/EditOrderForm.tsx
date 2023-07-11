@@ -13,6 +13,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { Order } from "@/types/order";
+import { useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -30,6 +36,19 @@ const validationSchema = yup.object({
 
 const EditOrderForm = ({ order }: { order: Order }) => {
   const router = useRouter();
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+  const handleCancelDialogOpen = () => {
+    setCancelDialogOpen(true);
+  };
+
+  const handleCancelDialogClose = (doCancel: boolean) => {
+    setCancelDialogOpen(false);
+
+    if (doCancel) {
+      router.back();
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -63,8 +82,11 @@ const EditOrderForm = ({ order }: { order: Order }) => {
   return (
     <>
       <h1 className="text-xl tracking-wide text-gray-900 text-center w-full">
-        Edit Order
+        Edit Order {order.id}
       </h1>
+      <p className="text-lg tracking-wide text-gray-900 text-center w-full">
+        Created {order.createdAt}
+      </p>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid xs={12}>
@@ -200,7 +222,7 @@ const EditOrderForm = ({ order }: { order: Order }) => {
                 type="button"
                 variant="text"
                 color="error"
-                onClick={() => router.back()}
+                onClick={handleCancelDialogOpen}
               >
                 Cancel
               </Button>
@@ -211,6 +233,27 @@ const EditOrderForm = ({ order }: { order: Order }) => {
           </Grid>
         </Grid>
       </form>
+      <Dialog
+        open={cancelDialogOpen}
+        onClose={handleCancelDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to cancel and go back?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleCancelDialogClose(false)} color="error">
+            No
+          </Button>
+          <Button onClick={() => handleCancelDialogClose(true)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
