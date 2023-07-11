@@ -10,6 +10,7 @@ import { Auth, API, Amplify } from "aws-amplify";
 import awsconfig from "../../src/aws-exports";
 import { useRouter } from "next/navigation";
 import OrderProductsList from "@/components/OrderProductsList";
+import { useState } from "react";
 
 Amplify.configure({ ...awsconfig, ssr: true });
 Auth.configure(awsconfig);
@@ -28,6 +29,7 @@ const ShoppingCart = () => {
     useShoppingCart();
 
   const router = useRouter();
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -40,6 +42,7 @@ const ShoppingCart = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      setIsPlacingOrder(true);
       const { userId, token } = await getAuthUserInfo();
 
       const orderData = {
@@ -56,7 +59,6 @@ const ShoppingCart = () => {
         body: orderData,
       };
 
-      console.log(requestData);
       const newOrder = await API.post("sallyapi", "/orders", requestData);
 
       router.push(`order-details/${newOrder.id}`);
@@ -213,7 +215,7 @@ const ShoppingCart = () => {
                     type="submit"
                     variant="outlined"
                     color="primary"
-                    disabled={!cart?.products}
+                    disabled={!cart?.products || isPlacingOrder}
                   >
                     Place Order
                   </Button>
