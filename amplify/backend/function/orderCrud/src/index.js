@@ -49,6 +49,11 @@ exports.handler = async (event) => {
     default:
       const userId = event.queryStringParameters?.userId;
       const proxy = event.pathParameters?.proxy;
+      // check query string parameters for limit and lastEvaluatedKey
+      // make them undefined if queryStringParameters is null
+      const limit = event.queryStringParameters?.limit ?? undefined;
+      const lastEvaluatedId =
+        event.queryStringParameters?.lastEvaluatedId ?? undefined;
 
       let data;
 
@@ -72,12 +77,23 @@ exports.handler = async (event) => {
             ExpressionAttributeValues: {
               ":usrId": userId,
             },
+            Limit: limit,
+            ExclusiveStartKey: lastEvaluatedId
+              ? { id: lastEvaluatedId }
+              : undefined,
           })
           .promise();
       } else {
         // get all orders
-        // TODO: improve performance by implementing pagination and avoiding a full table scan
-        data = await docClient.scan({ TableName: "order-main" }).promise();
+        data = await docClient
+          .scan({
+            TableName: "order-main",
+            Limit: limit,
+            ExclusiveStartKey: lastEvaluatedId
+              ? { id: lastEvaluatedId }
+              : undefined,
+          })
+          .promise();
       }
 
       return {
