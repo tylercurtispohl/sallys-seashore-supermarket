@@ -86,7 +86,7 @@ export const usePaginatedGetProducts = () => {
     const data = await API.get("sallyapi", "/products", {
       ...requestData,
       queryStringParameters: {
-        limit: 24,
+        limit: 50,
         lastEvaluatedId,
       },
     });
