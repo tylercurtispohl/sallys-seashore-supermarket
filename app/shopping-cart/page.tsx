@@ -73,7 +73,7 @@ const ShoppingCart = () => {
         </div>
       ) : (
         <>
-          {cart?.products ? (
+          {cart?.products && cart.products.length ? (
             <OrderProductsList
               products={cart.products}
               mode="cart"
