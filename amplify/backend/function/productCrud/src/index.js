@@ -25,6 +25,8 @@ exports.handler = async (event) => {
   };
 
   switch (event.httpMethod) {
+    case "DELETE":
+      return await deleteProduct(event);
     case "POST":
     case "PUT":
       const body = JSON.parse(event.body);
@@ -92,6 +94,28 @@ exports.handler = async (event) => {
         body: JSON.stringify(data),
       };
   }
+};
+
+const deleteProduct = async (event) => {
+  if (!event.pathParameters?.proxy) {
+    return {
+      ...partialResponse,
+      statusCode: 400,
+      body: "Product ID not provided!",
+    };
+  }
+
+  await docClient
+    .delete({
+      TableName: "products-main",
+      key: { id: event.pathParameters.proxy },
+    })
+    .promise();
+
+  return {
+    ...partialResponse,
+    statusCode: 204,
+  };
 };
 
 const putProduct = async (productData) => {
