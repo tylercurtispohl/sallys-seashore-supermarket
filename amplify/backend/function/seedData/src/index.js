@@ -99,10 +99,14 @@ exports.handler = async (event) => {
     for (let j = 0; j < numProducts; j++) {
       const randomProduct =
         newProductList[randomIntFromInterval(0, newProductList.length - 1)];
+      const randomQuantity = randomIntFromInterval(0, 10);
 
       // only insert the product if it isn't already in the list
       if (!orderProducts.find((op) => op.id === randomProduct.id)) {
-        orderProducts.push(randomProduct);
+        orderProducts.push({
+          ...randomProduct,
+          quantity: randomQuantity,
+        });
       }
     }
 
