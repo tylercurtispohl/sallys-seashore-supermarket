@@ -14,24 +14,10 @@ const withAuthenticatorOptions = {
 };
 
 export default withAuthenticator(function Home({ signOut, user }) {
-  const callProductsApi = async () => {
-    const authenticatedUser = await Auth.currentAuthenticatedUser();
-    const token = authenticatedUser.signInUserSession.idToken.jwtToken;
-    console.log("token: ", token);
-
-    const requestData = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    const data = await API.get("sallyapi", "/products", requestData);
-    console.log("data: ", data);
-  };
-
   return (
     <main className="">
       <ProductList actionLink="/product-details"></ProductList>
-      <div>
+      <div className="flex flex-row justify-end">
         <Button onClick={signOut}>Sign Out</Button>
       </div>
     </main>
