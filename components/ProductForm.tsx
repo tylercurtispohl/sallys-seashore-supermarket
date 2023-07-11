@@ -47,6 +47,7 @@ const ProductForm = ({
 }) => {
   const router = useRouter();
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleCancelDialogOpen = () => {
     setCancelDialogOpen(true);
@@ -57,6 +58,28 @@ const ProductForm = ({
 
     if (doCancel) {
       router.back();
+    }
+  };
+  const handleDeleteDialogOpen = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteDialogClose = async (doDelete: boolean) => {
+    setDeleteDialogOpen(false);
+
+    if (doDelete && product?.id) {
+      const authenticatedUser = await Auth.currentAuthenticatedUser();
+      const token = authenticatedUser.signInUserSession.idToken.jwtToken;
+
+      const requestData = {
+        headers: {
+          Authorization: token,
+        },
+      };
+
+      await API.del("sallyapi", `/products/${product.id}`, requestData);
+
+      router.push("/product-admin");
     }
   };
 
@@ -203,7 +226,19 @@ const ProductForm = ({
               className="w-full"
             />
           </Grid>
-          <Grid xsOffset={6} xs={6}>
+          <Grid xs={6}>
+            {product && (
+              <Button
+                type="button"
+                variant="outlined"
+                color="error"
+                onClick={handleDeleteDialogOpen}
+              >
+                Delete Product
+              </Button>
+            )}
+          </Grid>
+          <Grid xs={6}>
             <div className="flex flex-row justify-end gap-2">
               <Button
                 type="button"
@@ -237,6 +272,30 @@ const ProductForm = ({
             No
           </Button>
           <Button onClick={() => handleCancelDialogClose(true)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleCancelDialogClose}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete this product?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleDeleteDialogClose(false)} color="error">
+            No
+          </Button>
+          <Button
+            onClick={async () => await handleDeleteDialogClose(true)}
+            autoFocus
+          >
             Yes
           </Button>
         </DialogActions>
