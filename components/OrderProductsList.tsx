@@ -29,9 +29,12 @@ const OrderProductsList = ({
 }) => {
   return (
     <>
-      <div className=" border-b-2 border-b-gray-200 text-gray-900">
+      <div className=" text-gray-900">
         {products.map((product) => (
-          <div key={product.id} className="mb-2 pb-2 flex flex-row">
+          <div
+            key={product.id}
+            className="mb-2 pb-2 border-b-2 border-b-gray-200 flex flex-row"
+          >
             <Link
               href={`/product-details/${product.id}`}
               className="flex flex-row gap-5"
@@ -47,8 +50,8 @@ const OrderProductsList = ({
               </div>
             </Link>
 
-            <div className="flex flex-col justify-around flex-grow">
-              <div className="flex flex-row justify-end gap-2">
+            <div className="flex-grow flex flex-col justify-around ">
+              <div className="flex flex-row justify-end gap-5">
                 {mode === "cart" ? (
                   <TextField
                     className="w-20"
@@ -69,11 +72,17 @@ const OrderProductsList = ({
                     }}
                   />
                 ) : (
-                  <h3 className="text-lg tracking-wide">x{product.quantity}</h3>
+                  <div className="flex flex-col justify-around">
+                    <h3 className="text-lg tracking-wide">
+                      x{product.quantity}
+                    </h3>
+                  </div>
                 )}
-                <h3 className="text-lg tracking-wide">
-                  {currencyFormatter.format(product.quantity * product.price)}
-                </h3>
+                <div className="flex flex-col justify-around w-28">
+                  <h3 className="text-lg tracking-wide text-right">
+                    {currencyFormatter.format(product.quantity * product.price)}
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
